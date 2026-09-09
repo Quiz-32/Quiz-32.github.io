@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">Play - IOGames</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="logo" href="index.html">IOGames</a>
+    <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="search.html">Search</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="dmca.html">DMCA</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </div>
+</header>
+
+<div class="player-wrap">
+  <div class="player-header">
+    <h1 id="game-title">Loading...</h1>
+    <a class="back-link" href="index.html">&larr; Back to all games</a>
+  </div>
+  <div class="player-frame-box" id="player-frame-box"></div>
+</div>
+
+<footer class="site-footer">
+  <div>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="dmca.html">DMCA</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+  <p>&copy; 2026 IOGames. All games belong to their respective owners.</p>
+</footer>
+
+<script src="assets/games.js"></script>
+<script src="assets/common.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const slug = params.get("slug");
+  const game = GAMES.find(g => slugify(g.title) === slug);
+  const box = document.getElementById("player-frame-box");
+
+  if (!game) {
+    document.getElementById("game-title").textContent = "Game not found";
+    box.innerHTML = `<div class="player-missing">This game could not be found. <a href="index.html" style="color:var(--accent-2)">Go back home</a>.</div>`;
+  } else {
+    document.getElementById("game-title").textContent = game.title;
+    document.getElementById("page-title").textContent = game.title + " - IOGames";
+    if (game.url && game.url.trim()) {
+      box.innerHTML = `<iframe src="${game.url}" allowfullscreen allow="gamepad; fullscreen"></iframe>`;
+    } else {
+      box.innerHTML = `<div class="player-missing">This game's link hasn't been added yet. Add a "url" for "${game.title}" in assets/games.js.</div>`;
+    }
+  }
+</script>
+</body>
+</html>
