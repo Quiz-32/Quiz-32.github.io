@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">Play - Quiz-32</title>
+<title id="page-title">Quiz-32</title>
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="shortcut icon" href="favicon.ico">
@@ -60,7 +60,7 @@
     box.innerHTML = `<div class="player-missing">This game could not be found. <a href="index.html" style="color:var(--accent-2)">Go back home</a>.</div>`;
   } else {
     document.getElementById("game-title").textContent = game.title;
-    document.getElementById("page-title").textContent = game.title + " - Quiz-32";
+    document.getElementById("page-title").textContent = "Quiz-32";
     if (game.url && game.url.trim()) {
       box.innerHTML = `<iframe src="${game.url}" allowfullscreen allow="gamepad; fullscreen"></iframe>`;
     } else {
