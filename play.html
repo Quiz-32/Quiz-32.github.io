@@ -34,6 +34,11 @@
     <a class="back-link" href="index.html">&larr; Back to all games</a>
   </div>
   <div class="player-frame-box" id="player-frame-box"></div>
+  <div class="player-actions" id="player-actions" hidden>
+    <button class="button-outline" id="fullscreen-btn">&#x26F6; Fullscreen</button>
+    <button class="button-outline" id="newtab-btn">&#x2197; Open in New Tab</button>
+  </div>
+  <article class="game-article" id="game-article" hidden></article>
 </div>
 
 <footer class="site-footer">
@@ -54,6 +59,8 @@
   const slug = params.get("slug");
   const game = GAMES.find(g => slugify(g.title) === slug);
   const box = document.getElementById("player-frame-box");
+  const actions = document.getElementById("player-actions");
+  const articleBox = document.getElementById("game-article");
 
   if (!game) {
     document.getElementById("game-title").textContent = "Game not found";
@@ -61,10 +68,37 @@
   } else {
     document.getElementById("game-title").textContent = game.title;
     document.getElementById("page-title").textContent = "Quiz-32";
+
     if (game.url && game.url.trim()) {
-      box.innerHTML = `<iframe src="${game.url}" allowfullscreen allow="gamepad; fullscreen"></iframe>`;
+      box.innerHTML = `<iframe id="gameframe" src="${game.url}" allowfullscreen allow="gamepad; fullscreen"></iframe>`;
+
+      actions.hidden = false;
+      document.getElementById("fullscreen-btn").addEventListener("click", () => {
+        const frame = document.getElementById("gameframe");
+        if (frame.requestFullscreen) frame.requestFullscreen();
+        else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+      });
+      document.getElementById("newtab-btn").addEventListener("click", () => {
+        window.open(game.url, "_blank", "noopener");
+      });
     } else {
       box.innerHTML = `<div class="player-missing">This game's link hasn't been added yet. Add a "url" for "${game.title}" in assets/games.js.</div>`;
+    }
+
+    if (game.description && game.description.length) {
+      const paras = game.description.map(p => `<p>${p}</p>`).join("");
+      articleBox.innerHTML = `
+        <h2>${game.title} Game Guide</h2>
+        ${paras}
+        <h3>Game Details</h3>
+        <p><strong>Game:</strong> ${game.title}<br>
+        <strong>Access:</strong> Free online browser play<br>
+        <strong>Site:</strong> Quiz-32<br>
+        <strong>Download:</strong> Not required</p>
+        <h3>Content Notice</h3>
+        <p>Game names, images, and trademarks belong to their respective owners. Quiz-32 provides informational pages and browser access for convenience. Rights owners can request review through the <a href="contact.html">Contact</a> and <a href="dmca.html">DMCA</a> pages.</p>
+      `;
+      articleBox.hidden = false;
     }
   }
 </script>
